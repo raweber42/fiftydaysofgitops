@@ -1,0 +1,11 @@
+kind: GrafanaDashboard
+metadata:
+  name: loki-reads-dashboard
+spec:
+  # This references the ConfigMap automatically created in Step 1
+  configMapRef:
+    name: loki-dashboards-1
+    key: loki-reads.json # This is a dashboard for Loki reads (performance, errors, etc)
+
+
+
