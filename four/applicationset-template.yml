@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: fancy-applicationset
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  ################## TEST ##################
+  - git:
+      repoURL: https://gitlab.mycompany.io/myrepo/template-application/deployment.git
+      revision: main
+      files:
+      - path: "test/values/*.yaml" # Variables from inside the file can be referred to with '.<VARIABLE_NAME>>'
+      values:
+        path: 'test' # Additional static variables can be defined here and accessed with '.values.<VARIABLE_NAME>'
+  ################## PROD ##################
+  - git:
+      repoURL: https://gitlab.mycompany.io/myrepo/template-application/deployment.git
+      revision: main
+      files:
+      - path: "prod/values/*.yaml"
+      values:
+        path: 'prod'
+  ################## TEMPLATE ##################
+  template:
+    metadata:
+      name: 'template-application-{{.client}}-{{.cluster}}-{{.values.path}}'
+      labels:
+        environment: '{{.values.path}}' # Labels for ArgoCD filtering
+    spec:
+      source:
+        repoURL: https://gitlab.mycompany.io/myrepo/template-application/deployment.git
+        targetRevision: main
+        path: '{{.values.path}}'
+        helm:
+          releaseName: 'template-application-{{.client}}-{{.values.path}}'
+          valueFiles:
+            - 'values/{{.cluster}}.yaml'
+      destination:
+        name: '{{.datacenter}}'
+        namespace: myrepo
