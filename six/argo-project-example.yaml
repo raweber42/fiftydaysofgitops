@@ -1,0 +1,37 @@
+apiVersion: projects.argocd.crossplane.io/v1alpha1
+kind: Project
+metadata:
+  name: team-a
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    sourceRepos:
+    - https://gitlab.cistec.io/team-a/** # Only allow deployments from team-repo
+    destinations: # Only allow deployments to team-namespaces in certain clusters
+    - name: cluster-one
+      namespace: team-a
+    - name: cluster-two
+      namespace: team-a
+    clusterResourceWhitelist: [] # Lock down cluster-scoped resources
+    namespaceResourceWhitelist: # Allow only certain kinds of resources to be created by team-a
+    - group: ''
+      kind: Secret
+    - group: ''
+      kind: Service
+    - group: ''
+      kind: PersistentVolumeClaim
+    - group: ''
+      kind: Deployment
+    roles:
+    - name: team-a
+      description: role for team
+      policies:
+      # Define ArgoCD RBAC policies for team-a
+      - p, proj:team-a:team-a, applications, get, team-a/*, allow
+      - p, proj:team-a:team-a, applications, sync, team-a/*, allow
+      - p, proj:team-a:team-a, applications, update, team-a/*, allow
+      - p, proj:team-a:team-a, applications, action/apps/Deployment/restart, team-a/*, allow
+      groups:
+      - team-a
+
+
