@@ -1,0 +1,18 @@
+apiVersion: projects.argocd.crossplane.io/v1alpha1
+kind: Project
+metadata:
+  name: default
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    description: Unarmed default project
+    sourceRepos: []
+    destinations: []
+    namespaceResourceBlacklist:
+    - group: '*'
+      kind: '*'
+    clusterResourceBlacklist:
+    - group: '*'
+      kind: '*'
+  providerConfigRef:
+    name: argocd-provider
