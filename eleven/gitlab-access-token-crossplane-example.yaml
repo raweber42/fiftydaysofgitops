@@ -1,0 +1,23 @@
+apiVersion: groups.gitlab.crossplane.io/v1alpha1
+kind: AccessToken
+metadata:
+  name: testteam-argo-access-token
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    accessLevel: 20 # Developer access level
+    expiresAt: '2026-01-01T00:00:00Z' # Expiration date of the token (Rotation can be automated via Crossplane)
+    groupIdRef:
+      name: testteam # Reference to the GitLab Group this token will belong to
+    name: argocd
+    scopes:
+    - read_repository
+  managementPolicies:
+  - '*'
+  providerConfigRef:
+    name: provider-gitlab-config
+  writeConnectionSecretToRef:
+    name: testteam-argo-access-token-credentials # Name of the Secret where the token will be stored
+    namespace: crossplane-system
+
+
