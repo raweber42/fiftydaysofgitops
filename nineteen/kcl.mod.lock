@@ -1,0 +1,17 @@
+[dependencies]
+  [dependencies.cert-manager]
+    name = "cert-manager"
+    full_name = "cert-manager_0.3.0"
+    version = "0.3.0"
+    sum = "yyuUXsyOsHOGUK3e9P6GzM5A0hcSpW1XBd5O6TLhyvE="
+    reg = "ghcr.io"
+    repo = "kcl-lang/cert-manager"
+    oci_tag = "0.3.0"
+  [dependencies.k8s]
+    name = "k8s"
+    full_name = "k8s_1.31.2"
+    version = "1.31.2"
+    sum = "xBZgPsnpVVyWBpahuPQHReeRx28eUHGFoaPeqbct+vs="
+    reg = "ghcr.io"
+    repo = "kcl-lang/k8s"
+    oci_tag = "1.31.2"

@@ -1,0 +1,52 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-crt
+  namespace: cluster-a
+spec:
+  dnsNames:
+  - '*.cluster-a.example.io'
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: wildcard-crt
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-crt
+  namespace: cluster-b
+spec:
+  dnsNames:
+  - '*.cluster-b.example.io'
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: wildcard-crt
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-crt
+  namespace: cluster-c
+spec:
+  dnsNames:
+  - '*.cluster-c.example.io'
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: wildcard-crt
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-crt
+  namespace: cluster-d
+spec:
+  dnsNames:
+  - '*.cluster-d.example.io'
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: wildcard-crt
+
