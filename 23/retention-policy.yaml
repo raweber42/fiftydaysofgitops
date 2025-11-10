@@ -1,0 +1,23 @@
+apiVersion: project.harbor.crossplane.io/v1alpha1
+kind: RetentionPolicy
+metadata:
+  name: retention-policy-team-a
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    rule:
+    - alwaysRetain: true # Always retain tags matching semantic versioning
+      repoMatching: '**'
+      tagMatching: '{v*.*.*,*.*.*}'
+      untaggedArtifacts: false
+    - nDaysSinceLastPull: 30 # Delete artifacts not pulled in the last 30 days
+      repoMatching: '**'
+      tagMatching: '**'
+      untaggedArtifacts: false
+    schedule: Weekly
+    scopeRef:
+      name: team-a # Reference to the Project
+  providerConfigRef:
+    name: provider-harbor-config
+
+
