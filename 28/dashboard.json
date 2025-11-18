@@ -15,7 +15,7 @@
       }
     ]
   },
-  "description": "To check on resource usage for all our deployments\n\n",
+  "description": "To check on resource usage for all our applications (deployments, statefulsets...)",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -110,7 +110,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "k8s_pod_memory_usage_bytes{k8s_cluster_name=\"$cluster_name\", k8s_deployment_name=\"$deployment\"}/1000000000",
+          "expr": "k8s_pod_memory_usage_bytes{k8s_cluster_name=\"$cluster_name\", \"$type\"=\"$resource\"}/1000000000",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -126,7 +126,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "k8s_container_memory_limit_bytes{k8s_cluster_name=\"$cluster_name\", k8s_deployment_name=\"$deployment\"}/1000000000",
+          "expr": "k8s_container_memory_limit_bytes{k8s_cluster_name=\"$cluster_name\", \"$type\"=\"$resource\"}/1000000000",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": true,
@@ -228,7 +228,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "k8s_pod_cpu_usage{k8s_cluster_name=\"$cluster_name\", k8s_deployment_name=\"$deployment\"}",
+          "expr": "k8s_pod_cpu_usage{k8s_cluster_name=\"$cluster_name\", \"$type\"=\"$resource\"}",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -245,7 +245,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "k8s_container_cpu_request{k8s_cluster_name=\"$cluster_name\", k8s_deployment_name=\"$deployment\"}",
+          "expr": "k8s_container_cpu_request{k8s_cluster_name=\"$cluster_name\", \"$type\"=\"$resource\"}",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -300,16 +300,36 @@
         "type": "query"
       },
       {
+        "allowCustomValue": false,
+        "current": {
+          "text": "k8s_deployment_name",
+          "value": "k8s_deployment_name"
+        },
+        "definition": "label_names()",
+        "label": "type of resource",
+        "name": "type",
+        "options": [],
+        "query": {
+          "qryType": 0,
+          "query": "label_names()",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "k8s_cronjob_name|k8s_daemonset_name|k8s_deployment_name|k8s_pod_name|k8s_replicaset_name|k8s_deployment_name",
+        "sort": 1,
+        "type": "query"
+      },
+      {
         "current": {
           "text": "postgres-operator",
           "value": "postgres-operator"
         },
-        "definition": "label_values({k8s_namespace_name=\"$namespace\", k8s_cluster_name=\"$cluster_name\"},k8s_deployment_name)",
-        "name": "deployment",
+        "definition": "label_values({k8s_namespace_name=\"$namespace\", k8s_cluster_name=\"$cluster_name\"},$type)",
+        "name": "resource",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values({k8s_namespace_name=\"$namespace\", k8s_cluster_name=\"$cluster_name\"},k8s_deployment_name)",
+          "query": "label_values({k8s_namespace_name=\"$namespace\", k8s_cluster_name=\"$cluster_name\"},$type)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -319,12 +339,12 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Application Deployment Resource Usage",
+  "title": "Application Resource Usage",
   "uid": "07fff749-ded3-4120-881d-18aa1d0f59e1",
-  "version": 26
+  "version": 36
 }
